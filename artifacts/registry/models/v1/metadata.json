@@ -1,0 +1,34 @@
+{
+  "version": "v1",
+  "model_name": "logistic_regression",
+  "params": {
+    "C": 1.0,
+    "penalty": "l2",
+    "max_iter": 500,
+    "solver": "lbfgs"
+  },
+  "metrics": {
+    "precision": 0.9739708790092394,
+    "recall": 0.8965289730349971,
+    "f1": 0.9329132252389247,
+    "roc_auc": 0.9918528549351553,
+    "avg_precision": 0.9632934055847538,
+    "test_precision": 0.99,
+    "test_recall": 0.9519230769230769,
+    "test_f1": 0.9705882352941176,
+    "test_roc_auc": 0.9993857575435614,
+    "test_avg_precision": 0.9896404811844369,
+    "eval_precision": 0.99,
+    "eval_recall": 0.9519230769230769,
+    "eval_f1": 0.9705882352941176,
+    "eval_roc_auc": 0.9993857575435614,
+    "eval_avg_precision": 0.9896404811844369,
+    "eval_true_positives": 99,
+    "eval_false_positives": 1,
+    "eval_true_negatives": 2895,
+    "eval_false_negatives": 5,
+    "eval_fpr": 0.0003453038674033149
+  },
+  "mlflow_run_id": "99176e23e87a4034a31bbb6dbd0b536a",
+  "created_at": "2026-04-08T06:33:14.364042"
+}
