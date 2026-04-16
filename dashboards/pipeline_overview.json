@@ -1,0 +1,190 @@
+{
+  "annotations": { "list": [] },
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 1,
+  "id": null,
+  "links": [],
+  "panels": [
+    {
+      "title": "Pipeline Health",
+      "type": "stat",
+      "gridPos": { "h": 4, "w": 4, "x": 0, "y": 0 },
+      "targets": [
+        {
+          "expr": "ml_pipeline_health",
+          "legendFormat": "health"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "mappings": [
+            { "type": "value", "options": { "0": { "text": "DEGRADED", "color": "red" }, "1": { "text": "HEALTHY", "color": "green" } } }
+          ],
+          "thresholds": { "steps": [{ "value": null, "color": "red" }, { "value": 1, "color": "green" }] }
+        }
+      }
+    },
+    {
+      "title": "Active Model",
+      "type": "stat",
+      "gridPos": { "h": 4, "w": 4, "x": 4, "y": 0 },
+      "targets": [
+        {
+          "expr": "ml_active_model_info",
+          "legendFormat": "{{version}}"
+        }
+      ]
+    },
+    {
+      "title": "Total Predictions",
+      "type": "stat",
+      "gridPos": { "h": 4, "w": 4, "x": 8, "y": 0 },
+      "targets": [
+        {
+          "expr": "sum(ml_predictions_total)",
+          "legendFormat": "total"
+        }
+      ]
+    },
+    {
+      "title": "Retrain Events",
+      "type": "stat",
+      "gridPos": { "h": 4, "w": 4, "x": 12, "y": 0 },
+      "targets": [
+        {
+          "expr": "sum(ml_retrain_events_total)",
+          "legendFormat": "retrains"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "color": { "mode": "thresholds" },
+          "thresholds": { "steps": [{ "value": null, "color": "blue" }, { "value": 3, "color": "yellow" }, { "value": 5, "color": "red" }] }
+        }
+      }
+    },
+    {
+      "title": "Drift Alert Level",
+      "type": "gauge",
+      "gridPos": { "h": 4, "w": 4, "x": 16, "y": 0 },
+      "targets": [
+        {
+          "expr": "ml_drift_alert_level",
+          "legendFormat": "alert"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "min": 0, "max": 2,
+          "thresholds": { "steps": [{ "value": null, "color": "green" }, { "value": 1, "color": "yellow" }, { "value": 2, "color": "red" }] }
+        }
+      }
+    },
+    {
+      "title": "Aggregate PSI Over Time",
+      "type": "timeseries",
+      "gridPos": { "h": 8, "w": 12, "x": 0, "y": 4 },
+      "targets": [
+        {
+          "expr": "ml_aggregate_psi",
+          "legendFormat": "Aggregate PSI"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "custom": { "thresholdsStyle": { "mode": "line" } },
+          "thresholds": {
+            "steps": [
+              { "value": null, "color": "green" },
+              { "value": 0.15, "color": "yellow" },
+              { "value": 0.25, "color": "red" }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "title": "Per-Feature PSI",
+      "type": "timeseries",
+      "gridPos": { "h": 8, "w": 12, "x": 12, "y": 4 },
+      "targets": [
+        {
+          "expr": "ml_feature_psi",
+          "legendFormat": "{{feature_name}}"
+        }
+      ]
+    },
+    {
+      "title": "Prediction Latency (P95)",
+      "type": "timeseries",
+      "gridPos": { "h": 8, "w": 12, "x": 0, "y": 12 },
+      "targets": [
+        {
+          "expr": "histogram_quantile(0.95, rate(ml_prediction_latency_seconds_bucket[5m]))",
+          "legendFormat": "p95 latency"
+        },
+        {
+          "expr": "histogram_quantile(0.50, rate(ml_prediction_latency_seconds_bucket[5m]))",
+          "legendFormat": "p50 latency"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": { "unit": "s" }
+      }
+    },
+    {
+      "title": "Prediction Volume",
+      "type": "timeseries",
+      "gridPos": { "h": 8, "w": 12, "x": 12, "y": 12 },
+      "targets": [
+        {
+          "expr": "sum(rate(ml_predictions_total[5m])) by (predicted_class)",
+          "legendFormat": "{{predicted_class}}"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": { "unit": "reqps" }
+      }
+    },
+    {
+      "title": "Fraud Probability Distribution",
+      "type": "histogram",
+      "gridPos": { "h": 8, "w": 12, "x": 0, "y": 20 },
+      "targets": [
+        {
+          "expr": "sum(rate(ml_prediction_probability_bucket[5m])) by (le)",
+          "legendFormat": "{{le}}"
+        }
+      ]
+    },
+    {
+      "title": "Model F1 Score",
+      "type": "timeseries",
+      "gridPos": { "h": 8, "w": 12, "x": 12, "y": 20 },
+      "targets": [
+        {
+          "expr": "ml_model_f1_score",
+          "legendFormat": "{{model_version}} ({{dataset}})"
+        }
+      ]
+    },
+    {
+      "title": "Feature Means (Production)",
+      "type": "timeseries",
+      "gridPos": { "h": 8, "w": 24, "x": 0, "y": 28 },
+      "targets": [
+        {
+          "expr": "ml_feature_mean",
+          "legendFormat": "{{feature_name}}"
+        }
+      ]
+    }
+  ],
+  "schemaVersion": 38,
+  "tags": ["ml-pipeline", "fraud-detection"],
+  "templating": { "list": [] },
+  "time": { "from": "now-1h", "to": "now" },
+  "title": "Self-Healing ML Pipeline",
+  "uid": "selfhealing-ml-overview"
+}
